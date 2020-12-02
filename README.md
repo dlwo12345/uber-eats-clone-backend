@@ -49,6 +49,9 @@ $ npm run test:cov
 - dotenv 관련 모듈
 > npm i --save @nestjs/config
 
+- cross-env
+> npm i cross-env
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/

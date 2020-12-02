@@ -1,11 +1,15 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // 앱 전체에서 접근가능하게 설정
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test', // 파일 path 설정
+    }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
