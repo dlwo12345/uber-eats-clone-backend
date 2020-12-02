@@ -4,6 +4,4 @@ import { RestaurantsResolver } from './restaurants.resolver';
 @Module({
   providers: [RestaurantsResolver],
 })
-export class RestaurantsModule {
-  p;
-}
+export class RestaurantsModule {}
