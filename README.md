@@ -43,6 +43,8 @@ $ npm run test:cov
 - class-validator, class-transformer
 > npm i class-validator class-transformer
 
+- typeorm. postgre 관련 패키지
+> npm i --save @nestjs/typeorm typeorm pg
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
