@@ -49,8 +49,11 @@ $ npm run test:cov
 - dotenv 관련 모듈
 > npm i --save @nestjs/config
 
-- cross-env
+- cross-env(환경변수 설정 툴)
 > npm i cross-env
+
+- joi(환경변수 유효성 검사 툴)
+> npm i joi
 
 ## 기타
 - PostgreSQL
