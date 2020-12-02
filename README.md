@@ -40,4 +40,6 @@ $ npm run test:cov
 - graphql 패키지
 > npm i @nestjs/graphql graphql-tools graphql apollo-server-express
 
+- class-validator
+> npm i class-validator
 ## 기타
