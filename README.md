@@ -45,6 +45,10 @@ $ npm run test:cov
 
 - typeorm. postgre 관련 패키지
 > npm i --save @nestjs/typeorm typeorm pg
+
+- dotenv 관련 모듈
+> npm i --save @nestjs/config
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
