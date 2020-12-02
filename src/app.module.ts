@@ -9,17 +9,18 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
     ConfigModule.forRoot({
       isGlobal: true, // 앱 전체에서 접근가능하게 설정
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test', // 파일 path 설정
+      ignoreEnvFile: process.env.NODE_ENV === 'prod', // depoly 시 환경변수 파일 사용하지 않겠다는 설정
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'hong',
-      password: '12345',
-      database: 'uber-eats',
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       synchronize: true, // 데이터베이스 모든 모듈 동기화 여부
       logging: true,
     }),
