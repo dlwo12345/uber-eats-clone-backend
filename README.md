@@ -42,4 +42,8 @@ $ npm run test:cov
 
 - class-validator, class-transformer
 > npm i class-validator class-transformer
+
 ## 기타
+- PostgreSQL
+> https://postgresapp.com/
+ >> 시각화 도구 Postico https://eggerapps.at/postico/
