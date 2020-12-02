@@ -37,4 +37,7 @@ $ npm run test:cov
 
 ## 추가 패키지
 
+- graphql 패키지
+> npm i @nestjs/graphql graphql-tools graphql apollo-server-express
+
 ## 기타
