@@ -1,3 +1,4 @@
+import * as Joi from 'joi';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -10,6 +11,14 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       isGlobal: true, // 앱 전체에서 접근가능하게 설정
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test', // 파일 path 설정
       ignoreEnvFile: process.env.NODE_ENV === 'prod', // depoly 시 환경변수 파일 사용하지 않겠다는 설정
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('dev', 'prod'),
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.string().required(),
+        DB_USERNAME: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_NAME: Joi.string().required(),
+      }), // 환경변수 유효성 검사
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
