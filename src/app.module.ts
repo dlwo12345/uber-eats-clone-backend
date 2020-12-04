@@ -5,6 +5,9 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantsModule } from './restaurants/restaurants.module';
 import { Restaurant } from './restaurants/entities/restaurants.entity';
+import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -33,9 +36,14 @@ import { Restaurant } from './restaurants/entities/restaurants.entity';
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod', // 데이터베이스 모든 모듈 동기화 여부
       logging: true,
-      entities: [Restaurant],
+      entities: [
+        // Restaurant
+        User,
+      ],
     }),
-    RestaurantsModule,
+    // RestaurantsModule,
+    UsersModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],
