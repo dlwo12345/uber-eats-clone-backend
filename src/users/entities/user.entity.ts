@@ -9,6 +9,7 @@ import { BeforeInsert, Column, Entity } from 'typeorm';
 
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
+import { IsEmail, IsEnum, IsString } from 'class-validator';
 enum UserRole {
   Client,
   Owner,
@@ -23,14 +24,17 @@ registerEnumType(UserRole, { name: 'UserRole' });
 export class User extends CoreEntity {
   @Column()
   @Field((type) => String)
+  @IsEmail()
   email: string;
 
   @Column()
+  @IsString()
   @Field((type) => String)
   password: string;
 
   @Column({ type: 'enum', enum: UserRole })
   @Field((type) => UserRole)
+  @IsEnum(UserRole)
   role: UserRole;
 
   @BeforeInsert()
