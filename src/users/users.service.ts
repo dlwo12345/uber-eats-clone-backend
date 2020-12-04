@@ -15,17 +15,18 @@ export class UsersService {
     email,
     password,
     role,
-  }: CreateAccountInput): Promise<string | undefined> {
+  }: CreateAccountInput): Promise<{ ok: boolean; error?: string }> {
     try {
       const exists = await this.users.findOne({ email }); // 새로운 유저인지 확인
       if (exists) {
         // 기존 유저라면 error 발생
-        return '동일한 email을 가진 유저가 존재합니다.';
+        return { ok: false, error: '동일한 email을 가진 유저가 존재합니다.' };
       }
       await this.users.save(this.users.create({ email, password, role }));
+      return { ok: true };
     } catch (e) {
       console.log('e', e);
-      return '계정을 생성할수 없음';
+      return { ok: false, error: '계정을 생성할수 없음' };
     }
 
     // 유저 & hash 패스워드 생성
