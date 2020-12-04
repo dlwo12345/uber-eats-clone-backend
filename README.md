@@ -55,6 +55,11 @@ $ npm run test:cov
 - joi(환경변수 유효성 검사 툴)
 > npm i joi
 
+- bcrypt(암호화)
+> npm i bcrypt
+> npm i @types/bcrypt --dev-only
+
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
