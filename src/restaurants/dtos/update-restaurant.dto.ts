@@ -9,11 +9,9 @@ import { Restaurant } from '../entities/restaurants.entity';
 import { CreateRestaurantDto } from './create-restaurant.dto';
 
 @InputType()
-export class UpdateRestaurantInputType extends PartialType(
-  CreateRestaurantDto,
-) {}
+class UpdateRestaurantInputType extends PartialType(CreateRestaurantDto) {}
 
-@ArgsType()
+@InputType()
 export class UpdateRestaurantDto {
   @Field((type) => Number)
   id: number;
