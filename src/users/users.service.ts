@@ -58,8 +58,8 @@ export class UsersService {
         };
       }
 
+      // 3. JWT 만들어서 user에게 전달
       const token = this.jwtService.sign(user.id);
-
       return {
         ok: true,
         token,
@@ -70,7 +70,9 @@ export class UsersService {
         error,
       };
     }
+  }
 
-    // 3. JWT 만들어서 user에게 전달
+  async findById(id: number): Promise<User> {
+    return this.users.findOne({ id });
   }
 }
