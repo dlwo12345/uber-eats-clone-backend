@@ -57,8 +57,11 @@ $ npm run test:cov
 
 - bcrypt(암호화)
 > npm i bcrypt
-> npm i @types/bcrypt --dev-only
+> npm i @types/bcrypt --save-dev
 
+- jsonwebtoken
+> npm i jsonwebtoken
+> npm i @types/jsonwebtoken --save-dev
 
 ## 기타
 - PostgreSQL
