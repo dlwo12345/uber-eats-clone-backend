@@ -63,6 +63,9 @@ $ npm run test:cov
 > npm i jsonwebtoken
 > npm i @types/jsonwebtoken --save-dev
 
+- uuid
+> npm i uuid
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
