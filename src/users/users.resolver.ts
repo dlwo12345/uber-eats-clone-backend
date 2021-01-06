@@ -26,6 +26,7 @@ export class UserResolver {
 
   @Mutation((returns) => LoginOutput)
   async login(@Args('input') loginInput: LoginInput): Promise<LoginOutput> {
+    console.log('login', loginInput);
     return this.userService.login(loginInput);
   }
 
@@ -49,6 +50,7 @@ export class UserResolver {
     @AuthUser() authUser: User,
     @Args('input') editProfileInput: EditProfileInput,
   ): Promise<EditProfileOutput> {
+    console.log('1234', editProfileInput);
     return this.userService.editProfile(authUser.id, editProfileInput);
   }
 
