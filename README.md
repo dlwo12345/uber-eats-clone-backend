@@ -66,6 +66,9 @@ $ npm run test:cov
 - uuid
 > npm i uuid
 
+- got(http 통신 관련 모듈)
+> npm i got
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
