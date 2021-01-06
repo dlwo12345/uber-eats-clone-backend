@@ -69,6 +69,9 @@ $ npm run test:cov
 - got(http 통신 관련 모듈)
 > npm i got
 
+- form-data (스트림 생성 패키지)
+> npm i form-data
+
 ## 기타
 - PostgreSQL
 > https://postgresapp.com/
