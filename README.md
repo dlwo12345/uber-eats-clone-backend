@@ -70,3 +70,7 @@ $ npm run test:cov
 - PostgreSQL
 > https://postgresapp.com/
  >> 시각화 도구 Postico https://eggerapps.at/postico/
+
+- mailgun
+> https://app.mailgun.com/
+ >> 메일 전송시스템
