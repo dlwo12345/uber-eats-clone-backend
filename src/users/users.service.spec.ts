@@ -66,7 +66,23 @@ describe('UserService', () => {
   });
 
   describe('createAccount', () => {
-    it('should fail if user exists', () => {});
+    it('should fail if user exists', async () => {
+      usersRepository.findOne.mockResolvedValue({
+        id: 1,
+        email: 'fegrkrk',
+      }); // userRepository의 findOne mock 데이터 설정
+
+      const result = await service.createAccount({
+        email: '',
+        password: '',
+        role: 0,
+      });
+
+      expect(result).toMatchObject({
+        ok: false,
+        error: '동일한 email을 가진 유저가 존재합니다.',
+      });
+    });
   });
 
   it.todo('login');
