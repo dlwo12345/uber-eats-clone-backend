@@ -12,6 +12,7 @@ const mockRepository = () => ({
   save: jest.fn(),
   create: jest.fn(),
   findOneOrFail: jest.fn(),
+  delete: jest.fn(),
 });
 
 const mockJwtService = () => ({
@@ -64,6 +65,10 @@ describe('UserService', () => {
     jwtService = module.get<JwtService>(JwtService);
     usersRepository = module.get(getRepositoryToken(User));
     verificationsRepository = module.get(getRepositoryToken(Verification));
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
   });
 
   describe('createAccount', () => {
@@ -179,7 +184,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('findById', async () => {
+  describe('findById', () => {
     const findByIdArgs = {
       id: 1,
     };
@@ -256,9 +261,51 @@ describe('UserService', () => {
     });
     it('예외 발생시 / 실패해야함', async () => {
       usersRepository.findOne.mockRejectedValue(new Error());
-      const result = await service.editProfile(1,{email: 'test'});
+      const result = await service.editProfile(1, { email: 'test' });
       expect(result).toEqual({ ok: false, error: '업데이트 할 수 없습니다.' });
     });
   });
-  it.todo('verifyEmail');
+
+  describe('verifyEmail', () => {
+    it('검증 통과', async () => {
+      const mockedVerification = {
+        user: {
+          verified: false,
+        },
+        id: 1,
+      };
+      verificationsRepository.findOne.mockResolvedValue(mockedVerification);
+
+      const result = await service.verifyEmail('');
+
+      expect(verificationsRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(verificationsRepository.findOne).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.any(Object),
+      );
+      expect(usersRepository.save).toHaveBeenCalledTimes(1);
+      expect(usersRepository.save).toHaveBeenCalledWith({
+        verified: true,
+      });
+      expect(verificationsRepository.delete).toHaveBeenCalledTimes(1);
+      expect(verificationsRepository.delete).toHaveBeenCalledWith(
+        mockedVerification.id,
+      );
+      expect(result).toEqual({ ok: true });
+    });
+
+    it('검증 실패시 / 실패해야함', async () => {
+      verificationsRepository.findOne.mockResolvedValue(undefined);
+      const result = await service.verifyEmail('');
+      expect(result).toEqual({
+        ok: false,
+        error: 'Verification을 찾을 수 없습니다.',
+      });
+    });
+    it('예외 발생시 / 실패해야함', async () => {
+      verificationsRepository.findOne.mockRejectedValue(new Error());
+      const result = await service.verifyEmail('');
+      expect(result).toEqual({ ok: false, error: 'Verification을 에러발생' });
+    });
+  });
 });

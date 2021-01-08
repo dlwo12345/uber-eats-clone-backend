@@ -43,7 +43,6 @@ export class UserService {
           user,
         }),
       );
-      console.log(' createAccount verification code', verification);
       this.mailService.sendVerificationEmail(user.email, verification.code);
       return { ok: true };
     } catch (e) {
@@ -83,16 +82,13 @@ export class UserService {
     }
   }
 
-  
   async findById(id: number): Promise<UserProfileOutput> {
     try {
       const user = await this.users.findOneOrFail({ id });
-      if (user) {
-        return {
-          ok: true,
-          user: user,
-        };
-      }
+      return {
+        ok: true,
+        user,
+      };
     } catch (error) {
       return { ok: false, error: '유저를 찾을수 없습니다.' };
     }
@@ -107,7 +103,9 @@ export class UserService {
       if (email) {
         user.email = email;
         user.verified = false;
-        const verification = await this.verifications.save(this.verifications.create({ user }));
+        const verification = await this.verifications.save(
+          this.verifications.create({ user }),
+        );
         this.mailService.sendVerificationEmail(user.email, verification.code);
       }
       if (password) {
@@ -136,7 +134,7 @@ export class UserService {
       }
       return { ok: false, error: 'Verification을 찾을 수 없습니다.' };
     } catch (error) {
-      return { ok: false, error };
+      return { ok: false, error: 'Verification을 에러발생' };
     }
   }
 }
