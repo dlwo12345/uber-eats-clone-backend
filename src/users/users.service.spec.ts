@@ -11,6 +11,7 @@ const mockRepository = () => ({
   findOne: jest.fn(),
   save: jest.fn(),
   create: jest.fn(),
+  findOneOrFail: jest.fn(),
 });
 
 const mockJwtService = {
@@ -174,9 +175,27 @@ describe('UserService', () => {
     it('예외 상황 / 실패해야함 ', async () => {
       usersRepository.findOne.mockRejectedValue(new Error());
       const result = await service.login(loginArgs);
-      expect(result).toEqual({ ok: false, error: "로그인을 실패했습니다." });
+      expect(result).toEqual({ ok: false, error: '로그인을 실패했습니다.' });
     });
   });
+
+  describe('findById', async () => {
+    const findByIdArgs = {
+      id: 1,
+    };
+    it('기존 사용자를 찾는다', async () => {
+      usersRepository.findOneOrFail.mockResolvedValue(findByIdArgs);
+      const result = await service.findById(1);
+      expect(result).toEqual({ ok: true, user: findByIdArgs });
+    });
+
+    it('사용자를 찾지 못한경우 / 실패', async () => {
+      usersRepository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.findById(1);
+      expect(result).toEqual({ ok: false, error: '유저를 찾을수 없습니다.' });
+    });
+  });
+
   it.todo('findById');
   it.todo('editProfile');
   it.todo('verifyEmail');
