@@ -14,14 +14,14 @@ const mockRepository = () => ({
   findOneOrFail: jest.fn(),
 });
 
-const mockJwtService = {
+const mockJwtService = () => ({
   sign: jest.fn(() => 'sign-token-test'),
   verify: jest.fn(),
-};
+});
 
-const mockMailService = {
+const mockMailService = () => ({
   sendVerificationEmail: jest.fn(),
-};
+});
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>; // 타입의 모든 요소를 mock형태로 선언
 
@@ -51,11 +51,11 @@ describe('UserService', () => {
         },
         {
           provide: JwtService,
-          useValue: mockJwtService,
+          useValue: mockJwtService(),
         },
         {
           provide: MailService,
-          useValue: mockMailService,
+          useValue: mockMailService(),
         },
       ],
     }).compile();
@@ -239,6 +239,25 @@ describe('UserService', () => {
         newUser.email,
         newVerification.code,
       );
+    });
+    it('패스워드 변경', async () => {
+      const editProfileArgs = {
+        userId: 1,
+        input: { password: 'new.password' },
+      };
+      usersRepository.findOne.mockResolvedValue({ password: 'old' });
+      const result = await service.editProfile(
+        editProfileArgs.userId,
+        editProfileArgs.input,
+      );
+      expect(usersRepository.save).toHaveBeenCalledTimes(1);
+      expect(usersRepository.save).toHaveBeenCalledWith(editProfileArgs.input);
+      expect(result).toEqual({ ok: true });
+    });
+    it('예외 발생시 / 실패해야함', async () => {
+      usersRepository.findOne.mockRejectedValue(new Error());
+      const result = await service.editProfile(1,{email: 'test'});
+      expect(result).toEqual({ ok: false, error: '업데이트 할 수 없습니다.' });
     });
   });
   it.todo('verifyEmail');
