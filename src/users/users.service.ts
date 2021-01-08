@@ -78,11 +78,12 @@ export class UserService {
     } catch (error) {
       return {
         ok: false,
-        error,
+        error: '로그인을 실패했습니다.',
       };
     }
   }
 
+  
   async findById(id: number): Promise<UserProfileOutput> {
     try {
       const user = await this.users.findOne({ id });
