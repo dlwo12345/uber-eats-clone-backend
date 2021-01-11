@@ -27,7 +27,7 @@ import { MailModule } from './mail/mail.module';
       envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test', // 파일 path 설정
       ignoreEnvFile: process.env.NODE_ENV === 'prod', // depoly 시 환경변수 파일 사용하지 않겠다는 설정
       validationSchema: Joi.object({
-        NODE_ENV: Joi.string().valid('dev', 'prod'),
+        NODE_ENV: Joi.string().valid('dev', 'prod', 'test'),
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
         DB_USERNAME: Joi.string().required(),
@@ -51,7 +51,8 @@ import { MailModule } from './mail/mail.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       synchronize: process.env.NODE_ENV !== 'prod', // 데이터베이스 모든 모듈 동기화 여부
-      logging: true,
+      logging:
+        process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
       entities: [
         // Restaurant
         User,
