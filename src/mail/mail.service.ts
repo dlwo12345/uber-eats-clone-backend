@@ -8,16 +8,13 @@ import { EmailVar, MailModuleOptions } from './mail.interfaces';
 export class MailService {
   constructor(
     @Inject(CONFIG_OPTIONS) private readonly options: MailModuleOptions,
-  ) {
-    console.log('options', options);
-    // this.sendEmail('testing', 'test');
-  }
+  ) {}
 
-  private async sendEmail(
+  async sendEmail(
     subject: string,
     template: string,
     emailVars: EmailVar[],
-  ) {
+  ): Promise<boolean> {
     const form = new FormData();
     form.append('from', `hong from <mailgun@${this.options.domain}>`);
     form.append('to', `fire@dumy.co.kr`);
@@ -25,17 +22,21 @@ export class MailService {
     form.append('template', 'grgrkjgrkjgr');
     emailVars.forEach((eVar) => form.append(`v:${eVar.key}`, eVar.value));
     try {
-      await got(`https://api.mailgun.net/v3/${this.options.domain}/messages`, {
-        headers: {
-          Authorization: `Basic ${Buffer.from(
-            `api:${this.options.apiKey}`,
-          ).toString('base64')}`, // Authorization base64 인코딩
+      await got.post(
+        `https://api.mailgun.net/v3/${this.options.domain}/messages`,
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `api:${this.options.apiKey}`,
+            ).toString('base64')}`, // Authorization base64 인코딩
+          },
+          method: 'POST',
+          body: form,
         },
-        method: 'POST',
-        body: form,
-      });
+      );
+      return true;
     } catch (error) {
-      console.log('error', error);
+      return false;
     }
   }
 
