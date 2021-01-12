@@ -54,19 +54,13 @@ import { Category } from './restaurants/entities/category.entity';
       synchronize: process.env.NODE_ENV !== 'prod', // 데이터베이스 모든 모듈 동기화 여부
       logging:
         process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
-      entities: [
-        // Restaurant
-        User,
-        Verification,
-        Restaurant,
-        Category,
-      ],
+      entities: [User, Verification, Restaurant, Category],
     }),
-    // RestaurantsModule,
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
     }),
     UsersModule,
+    RestaurantsModule,
     MailModule.forRoot({
       apiKey: process.env.MAILGUN_API_KEY,
       domain: process.env.MAILGUN_DOMAIN_NAME,
