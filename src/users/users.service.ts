@@ -103,6 +103,7 @@ export class UserService {
       if (email) {
         user.email = email;
         user.verified = false;
+        await this.verifications.delete({ user: { id: user.id } });
         const verification = await this.verifications.save(
           this.verifications.create({ user }),
         );
@@ -116,6 +117,7 @@ export class UserService {
         ok: true,
       };
     } catch (error) {
+      console.log('error', error);
       return { ok: false, error: '업데이트 할 수 없습니다.' };
     }
   }
