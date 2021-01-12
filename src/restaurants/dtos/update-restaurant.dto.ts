@@ -5,7 +5,7 @@ import {
   OmitType,
   PartialType,
 } from '@nestjs/graphql';
-import { Restaurant } from '../entities/restaurants.entity';
+import { Restaurant } from '../entities/restaurant.entity';
 import { CreateRestaurantDto } from './create-restaurant.dto';
 
 @InputType()
