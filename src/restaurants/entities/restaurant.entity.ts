@@ -5,7 +5,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Category } from './category.entity';
 
-@InputType('RestaurantInputType',{ isAbstract: true })
+@InputType('RestaurantInputType', { isAbstract: true })
 @ObjectType()
 @Entity()
 export class Restaurant extends CoreEntity {
@@ -15,7 +15,7 @@ export class Restaurant extends CoreEntity {
   @Length(5, 10)
   name: string;
 
-  @Field((type) => String)
+  @Field((type) => String, { defaultValue: '강남' })
   @Column()
   @IsString()
   coverImg: string;
