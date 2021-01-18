@@ -38,9 +38,7 @@ export class Restaurant extends CoreEntity {
 
   @Field((type) => User)
   @ManyToOne((type) => User, (user) => user.restaurants, {
-    // category가 없어도 restaurant는 지워지지 않음
-    nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   owner: User;
 }
