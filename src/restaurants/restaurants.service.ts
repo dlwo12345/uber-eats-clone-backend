@@ -4,6 +4,7 @@ import { User } from 'src/users/entities/user.entity';
 import { Like, Raw, Repository } from 'typeorm';
 import { AllCategoriesOutput } from './dtos/all-categories.dto';
 import { CategoryInput, CategoryOutput } from './dtos/category.dto';
+import { CreateDishInput, CreateDishOutput } from './dtos/create-dish.dto';
 import {
   CreateRestaurantInput,
   CreateRestaurantOutput,
@@ -23,6 +24,7 @@ import {
   SearchRestaurantOutput,
 } from './dtos/search-restaurant.dto';
 import { Category } from './entities/category.entity';
+import { Dish } from './entities/dish.entity';
 import { Restaurant } from './entities/restaurant.entity';
 import { CategoryRepository } from './repositories/category.repository';
 
@@ -31,6 +33,8 @@ export class RestaurantService {
   constructor(
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
+    @InjectRepository(Dish)
+    private readonly dishes: Repository<Dish>,
     private readonly categories: CategoryRepository,
   ) {}
 
@@ -215,7 +219,9 @@ export class RestaurantService {
     restaurantId,
   }: RestaurantInput): Promise<RestaurantOutput> {
     try {
-      const restaurant = await this.restaurants.findOne(restaurantId);
+      const restaurant = await this.restaurants.findOne(restaurantId, {
+        relations: ['menu'],
+      });
 
       if (!restaurant) {
         return {
@@ -257,6 +263,46 @@ export class RestaurantService {
         error: '레스토랑을 찾을 수 없습니다.',
       };
     }
-    return;
+  }
+
+  async createDish(
+    onwer: User,
+    createDishInput: CreateDishInput,
+  ): Promise<CreateDishOutput> {
+    try {
+      // restaurant 찾기
+      const restaurant = await this.restaurants.findOne(
+        createDishInput.restaurantId,
+      );
+
+      // restaurant 가 없을때
+      if (!restaurant) {
+        return {
+          ok: false,
+          error: 'restaurant를 찾을 수 없습니다.',
+        };
+      }
+
+      if (onwer.id !== restaurant.ownerId) {
+        return {
+          ok: false,
+          error: '소유 restaurant에만 메뉴를 추가할 수 있습니다.',
+        };
+      }
+
+      const dish = await this.dishes.save(
+        this.dishes.create({ ...createDishInput, restaurant }),
+      );
+      console.log('dish', dish);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      console.log('error', error);
+      return {
+        ok: false,
+        error: 'dish를 생성할 수 없습니다.',
+      };
+    }
   }
 }
