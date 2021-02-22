@@ -20,6 +20,8 @@ import { Verification } from './users/entities/verification.entity';
 import { MailModule } from './mail/mail.module';
 import { Category } from './restaurants/entities/category.entity';
 import { Dish } from './restaurants/entities/dish.entity';
+import { OrdersModule } from './orders/orders.module';
+import { Order } from './orders/entities/order.entity';
 
 @Module({
   imports: [
@@ -54,7 +56,7 @@ import { Dish } from './restaurants/entities/dish.entity';
       synchronize: process.env.NODE_ENV !== 'prod', // 데이터베이스 모든 모듈 동기화 여부
       logging:
         process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
-      entities: [User, Verification, Restaurant, Category, Dish],
+      entities: [User, Verification, Restaurant, Category, Dish, Order],
     }),
     JwtModule.forRoot({
       privateKey: process.env.PRIVATE_KEY,
@@ -67,6 +69,7 @@ import { Dish } from './restaurants/entities/dish.entity';
       fromEmail: process.env.MAILGUN_FROM_EMAIL,
     }),
     AuthModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [],
